@@ -3,14 +3,15 @@ pipeline {
 
     stages {
 
-        stage('Build Docker Image')
+        stage('Build Docker Image') {
             steps{
                 script {
                         dockerapp = docker.build("cleitonso/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
                 }
             }
+        }
 
-        stage('Push Docker Image')
+        stage('Push Docker Image') {
             steps{
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'dockerhub')
@@ -18,5 +19,6 @@ pipeline {
                     dockerapp.push("${env.BUILD_ID}")
                 }
             }
+        }
     }
 }
